@@ -1,5 +1,5 @@
 use crate::helpers;
-use std::io;
+use std::{collections::HashMap, io};
 
 #[cfg(test)]
 mod tests {
@@ -50,6 +50,26 @@ pub fn run_part2(input: &Vec<String>) -> i128 {
         .sum()
 }
 
+pub fn run_part2_alt(input: &Vec<String>) -> i128 {
+    let mut left = HashMap::new();
+    let mut right = vec![];
+
+    for line in input.iter() {
+        let mut parts = line.split_whitespace();
+        left.insert(parts.next().unwrap().parse::<i128>().unwrap(), 0 as i128);
+        right.push(parts.next().unwrap().parse::<i128>().unwrap());
+    }
+    right.sort();
+
+    for r in right.iter() {
+        if let Some(l) = left.get_mut(r) {
+            *l += 1;
+        }
+    }
+
+    left.iter().map(|(k, v)| k * v).sum()
+}
+
 pub fn run() -> io::Result<()> {
     println!("\n\nDay 1");
 
@@ -63,6 +83,9 @@ pub fn run() -> io::Result<()> {
     // Part 2 Goes here
     let p2 = run_part2(&lines);
     println!("Part2: {:?}", p2);
+
+    let p2_alt = run_part2_alt(&lines);
+    println!("Part2_alt: {:?}", p2_alt);
 
     Ok(())
 }

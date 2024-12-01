@@ -14,3 +14,10 @@ pub fn bench_day1_p2(c: &mut Criterion) {
         b.iter(|| day1::run_part2(black_box(&lines)))
     });
 }
+
+pub fn bench_day1_p2_alt(c: &mut Criterion) {
+    let lines = helpers::read_file_to_vec::<String>("inputs/day1.txt");
+    c.bench_function("Day1 Part 2 alt", |b| {
+        b.iter(|| day1::run_part2_alt(black_box(&lines)))
+    });
+}
