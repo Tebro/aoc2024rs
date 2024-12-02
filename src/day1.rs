@@ -62,9 +62,7 @@ pub fn run_part2_alt(input: &Vec<String>) -> i128 {
     right.sort();
 
     for r in right.iter() {
-        if let Some(l) = left.get_mut(r) {
-            *l += 1;
-        }
+        left.entry(*r).and_modify(|x| *x += 1);
     }
 
     left.iter().map(|(k, v)| k * v).sum()
