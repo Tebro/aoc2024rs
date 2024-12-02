@@ -84,6 +84,34 @@ pub fn run_part2(input: &Vec<String>) -> i128 {
         .count() as i128
 }
 
+fn is_safe(x: &Vec<i32>) -> bool {
+    is_serial(x) && within_stepsize_limit(x, 1, 3)
+}
+
+pub fn run_part2_alt(input: &Vec<String>) -> i128 {
+    let parsed = input.iter().map(|l| parse_line(l));
+
+    let mut count = 0;
+
+    for p in parsed {
+        if is_safe(&p) {
+            count += 1;
+            continue;
+        }
+
+        for i in 0..p.len() {
+            let mut p2 = p.clone();
+            p2.remove(i);
+            if is_safe(&p2) {
+                count += 1;
+                break;
+            }
+        }
+    }
+
+    count
+}
+
 pub fn run() -> io::Result<()> {
     println!("\n\nDay 2");
 
@@ -97,6 +125,9 @@ pub fn run() -> io::Result<()> {
     // Part 2 Goes here
     let p2 = run_part2(&lines);
     println!("Part2: {:?}", p2);
+
+    let p2 = run_part2_alt(&lines);
+    println!("Part2 alt: {:?}", p2);
 
     Ok(())
 }
