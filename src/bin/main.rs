@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic)]
+#![allow(clippy::module_name_repetitions, clippy::wildcard_imports)]
 #[allow(dead_code, unused_imports)]
 use std::io;
 
