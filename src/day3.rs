@@ -20,9 +20,7 @@ mod tests {
     }
 }
 
-type MulInstruction = (i32, i32);
-
-fn parse_mul_instruction(s: &str) -> MulInstruction {
+fn parse_mul_instruction(s: &str) -> (i32, i32) {
     let re_nums = Regex::new(r"mul\((\d\d?\d?),(\d\d?\d?)\)").unwrap();
     let caps = re_nums.captures(s).unwrap();
     let a = caps[1].parse::<i32>().unwrap();
