@@ -25,7 +25,9 @@ fn parse_line(line: &str) -> Vec<usize> {
         .collect()
 }
 
-fn is_serial(input: &[usize]) -> bool {
+// This is here for archeological reasons
+#[allow(dead_code)]
+fn is_serial_old(input: &[usize]) -> bool {
     let going_up = input[0] < input[1];
 
     for i in 1..input.len() {
@@ -40,9 +42,15 @@ fn is_serial(input: &[usize]) -> bool {
     true
 }
 
+fn is_serial(input: &[usize]) -> bool {
+    let is_increasing = input.windows(2).all(|win| win[0] < win[1]);
+    let is_decreasing = input.windows(2).all(|win| win[0] > win[1]);
+    is_increasing || is_decreasing
+}
+
 fn within_stepsize_limit(input: &[usize]) -> bool {
     for i in 1..input.len() {
-        let diff = input[i].abs_diff(input[i + 1]);
+        let diff = input[i].abs_diff(input[i - 1]);
         if !(1..=3).contains(&diff) {
             return false;
         }
