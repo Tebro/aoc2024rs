@@ -42,7 +42,7 @@ fn parse_mul_instruction(s: &str) -> (i32, i32) {
     (a, b)
 }
 
-pub fn run_part1(input: &Vec<String>) -> i128 {
+pub fn run_part1(input: &[String]) -> i128 {
     let re_instruction = Regex::new(r"(mul\(\d\d?\d?,\d\d?\d?\))").unwrap();
 
     let matches: Vec<Vec<String>> = input
@@ -62,7 +62,7 @@ pub fn run_part1(input: &Vec<String>) -> i128 {
         .sum()
 }
 
-pub fn run_part1_alt(input: &Vec<String>) -> i128 {
+pub fn run_part1_alt(input: &[String]) -> i128 {
     let re_nums = Regex::new(r"mul\((\d\d?\d?),(\d\d?\d?)\)").unwrap();
     let all_lines = input.join("");
     re_nums
@@ -96,7 +96,7 @@ fn process_line(line: &str, doing: &mut bool) -> i128 {
     result
 }
 
-pub fn run_part2(input: &Vec<String>) -> i128 {
+pub fn run_part2(input: &[String]) -> i128 {
     let mut doing = true;
     let mut sum = 0;
     for l in input {
@@ -106,14 +106,14 @@ pub fn run_part2(input: &Vec<String>) -> i128 {
     sum
 }
 
-pub fn run_part2_alt(input: &Vec<String>) -> i128 {
+pub fn run_part2_alt(input: &[String]) -> i128 {
     let re = Regex::new(r"mul\((\d\d?\d?),(\d\d?\d?)\)").unwrap();
     let lines = input.join("");
 
     let mut parts = lines.split("don't()");
     let mut relevant = vec![];
     relevant.push(parts.next().unwrap());
-    while let Some(part) = parts.next() {
+    for part in parts {
         let sub = part.split("do()").skip(1);
         for s in sub {
             relevant.push(s);

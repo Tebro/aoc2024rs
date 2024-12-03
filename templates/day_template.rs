@@ -19,11 +19,11 @@ mod tests {
     }
 }
 
-pub fn run_part1(input: &Vec<String>) -> i128 {
+pub fn run_part1(input: &[String]) -> i128 {
     100
 }
 
-pub fn run_part2(input: &Vec<String>) -> i128 {
+pub fn run_part2(input: &[String]) -> i128 {
     200
 }
 

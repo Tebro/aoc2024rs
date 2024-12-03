@@ -19,7 +19,7 @@ mod tests {
     }
 }
 
-fn parse_input(input: &Vec<String>) -> (Vec<i128>, Vec<i128>) {
+fn parse_input(input: &[String]) -> (Vec<i128>, Vec<i128>) {
     let mut left = vec![];
     let mut right = vec![];
 
@@ -34,14 +34,14 @@ fn parse_input(input: &Vec<String>) -> (Vec<i128>, Vec<i128>) {
     (left, right)
 }
 
-pub fn run_part1(input: &Vec<String>) -> i128 {
+pub fn run_part1(input: &[String]) -> i128 {
     let (left, right) = parse_input(input);
 
     let pairs = left.iter().zip(right.iter());
     pairs.map(|(l, r)| (l - r).abs()).sum()
 }
 
-pub fn run_part2(input: &Vec<String>) -> i128 {
+pub fn run_part2(input: &[String]) -> i128 {
     let (left, right) = parse_input(input);
 
     left.iter()
@@ -50,13 +50,13 @@ pub fn run_part2(input: &Vec<String>) -> i128 {
         .sum()
 }
 
-pub fn run_part2_alt(input: &Vec<String>) -> i128 {
+pub fn run_part2_alt(input: &[String]) -> i128 {
     let mut left = HashMap::new();
     let mut right = vec![];
 
     for line in input.iter() {
         let mut parts = line.split_whitespace();
-        left.insert(parts.next().unwrap().parse::<i128>().unwrap(), 0 as i128);
+        left.insert(parts.next().unwrap().parse::<i128>().unwrap(), 0_i128);
         right.push(parts.next().unwrap().parse::<i128>().unwrap());
     }
     right.sort();

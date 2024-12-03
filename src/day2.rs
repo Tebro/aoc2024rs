@@ -25,7 +25,7 @@ fn parse_line(line: &str) -> Vec<i32> {
         .collect()
 }
 
-fn is_serial(input: &Vec<i32>) -> bool {
+fn is_serial(input: &[i32]) -> bool {
     let going_up = input[0] < input[1];
 
     for i in 1..input.len() {
@@ -33,16 +33,14 @@ fn is_serial(input: &Vec<i32>) -> bool {
             if input[i] < input[i - 1] {
                 return false;
             }
-        } else {
-            if input[i] > input[i - 1] {
-                return false;
-            }
+        } else if input[i] > input[i - 1] {
+            return false;
         }
     }
     true
 }
 
-fn within_stepsize_limit(input: &Vec<i32>, min: i32, max: i32) -> bool {
+fn within_stepsize_limit(input: &[i32], min: i32, max: i32) -> bool {
     for i in 1..input.len() {
         let diff = (input[i] - input[i - 1]).abs();
         if diff > max || diff < min {
@@ -52,27 +50,27 @@ fn within_stepsize_limit(input: &Vec<i32>, min: i32, max: i32) -> bool {
     true
 }
 
-pub fn run_part1(input: &Vec<String>) -> i128 {
+pub fn run_part1(input: &[String]) -> i128 {
     input
         .iter()
         .map(|l| parse_line(l))
-        .filter(is_serial)
+        .filter(|l| is_serial(l))
         .filter(|x| within_stepsize_limit(x, 1, 3))
         .count() as i128
 }
 
-fn drop_one_options(input: &Vec<i32>) -> Vec<Vec<i32>> {
+fn drop_one_options(input: &[i32]) -> Vec<Vec<i32>> {
     let mut options = vec![];
 
     for i in 0..input.len() {
-        let mut new_option = input.clone();
+        let mut new_option = input.to_owned();
         new_option.remove(i);
         options.push(new_option);
     }
     options
 }
 
-pub fn run_part2(input: &Vec<String>) -> i128 {
+pub fn run_part2(input: &[String]) -> i128 {
     input
         .iter()
         .map(|l| parse_line(l))
@@ -84,11 +82,11 @@ pub fn run_part2(input: &Vec<String>) -> i128 {
         .count() as i128
 }
 
-fn is_safe(x: &Vec<i32>) -> bool {
+fn is_safe(x: &[i32]) -> bool {
     is_serial(x) && within_stepsize_limit(x, 1, 3)
 }
 
-pub fn run_part2_alt(input: &Vec<String>) -> i128 {
+pub fn run_part2_alt(input: &[String]) -> i128 {
     let parsed = input.iter().map(|l| parse_line(l));
 
     let mut count = 0;
