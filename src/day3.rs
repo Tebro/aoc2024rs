@@ -12,6 +12,7 @@ mod tests {
 
         assert_eq!(run_part1(&lines), 161_i128);
     }
+
     #[test]
     fn test_part1_alt() {
         let lines = helpers::read_file_to_vec::<String>("inputs/day3_test.txt");
@@ -24,6 +25,12 @@ mod tests {
         let lines = helpers::read_file_to_vec::<String>("inputs/day3_test.txt");
 
         assert_eq!(run_part2(&lines), 48_i128);
+    }
+    #[test]
+    fn test_part2_alt() {
+        let lines = helpers::read_file_to_vec::<String>("inputs/day3_test.txt");
+
+        assert_eq!(run_part2_alt(&lines), 48_i128);
     }
 }
 
@@ -99,6 +106,26 @@ pub fn run_part2(input: &Vec<String>) -> i128 {
     sum
 }
 
+pub fn run_part2_alt(input: &Vec<String>) -> i128 {
+    let re = Regex::new(r"mul\((\d\d?\d?),(\d\d?\d?)\)").unwrap();
+    let lines = input.join("");
+
+    let mut parts = lines.split("don't()");
+    let mut relevant = vec![];
+    relevant.push(parts.next().unwrap());
+    while let Some(part) = parts.next() {
+        let sub = part.split("do()").skip(1);
+        for s in sub {
+            relevant.push(s);
+        }
+    }
+
+    let all_relevant = relevant.join("");
+    re.captures_iter(&all_relevant)
+        .map(|caps| caps[1].parse::<i128>().unwrap() * caps[2].parse::<i128>().unwrap())
+        .sum()
+}
+
 pub fn run() -> io::Result<()> {
     println!("\n\nDay 3");
 
@@ -115,6 +142,9 @@ pub fn run() -> io::Result<()> {
     // Part 2 Goes here
     let p2 = run_part2(&lines);
     println!("Part2: {:?}", p2);
+
+    let p1 = run_part2_alt(&lines);
+    println!("Part2 alt: {:?}", p1);
 
     Ok(())
 }

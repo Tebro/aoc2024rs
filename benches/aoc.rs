@@ -22,6 +22,7 @@ criterion_group!(
     day3::bench_day3_p1,
     day3::bench_day3_p1_alt,
     day3::bench_day3_p2,
+    day3::bench_day3_p2_alt,
 );
 // Add day group here
 
