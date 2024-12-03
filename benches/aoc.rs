@@ -17,7 +17,12 @@ criterion_group!(
     day2::bench_day2_p2,
     day2::bench_day2_p2_alt
 );
-criterion_group!(day3, day3::bench_day3_p1, day3::bench_day3_p2);
+criterion_group!(
+    day3,
+    day3::bench_day3_p1,
+    day3::bench_day3_p1_alt,
+    day3::bench_day3_p2,
+);
 // Add day group here
 
 // Do not remove from last line
