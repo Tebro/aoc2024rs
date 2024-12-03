@@ -56,7 +56,7 @@ pub fn run_part2_alt(input: &[String]) -> usize {
 
     for line in input.iter() {
         let mut parts = line.split_whitespace();
-        left.insert(parts.next().unwrap().parse::<usize>().unwrap(), 0_usize);
+        left.insert(parts.next().unwrap().parse::<usize>().unwrap(), 0);
         right.push(parts.next().unwrap().parse::<usize>().unwrap());
     }
     right.sort();
