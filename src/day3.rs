@@ -48,7 +48,7 @@ pub fn run_part1(input: &Vec<String>) -> i128 {
         .sum()
 }
 
-fn do_line(line: &str, doing: &mut bool) -> i128 {
+fn process_line(line: &str, doing: &mut bool) -> i128 {
     let re = Regex::new(r"^mul\((\d\d?\d?),(\d\d?\d?)\).*").unwrap();
     let re_do = Regex::new(r"^do\(\).*").unwrap();
     let re_dont = Regex::new(r"^don't\(\).*").unwrap();
@@ -77,7 +77,7 @@ pub fn run_part2(input: &Vec<String>) -> i128 {
     let mut doing = true;
     let mut sum = 0;
     for l in input {
-        let result = do_line(l, &mut doing);
+        let result = process_line(l, &mut doing);
         sum += result;
     }
     sum
