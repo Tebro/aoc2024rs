@@ -10,39 +10,39 @@ mod tests {
     fn test_part1() {
         let lines = helpers::read_file_to_vec::<String>("inputs/day3_test.txt");
 
-        assert_eq!(run_part1(&lines), 161_i128);
+        assert_eq!(run_part1(&lines), 161);
     }
 
     #[test]
     fn test_part1_alt() {
         let lines = helpers::read_file_to_vec::<String>("inputs/day3_test.txt");
 
-        assert_eq!(run_part1_alt(&lines), 161_i128);
+        assert_eq!(run_part1_alt(&lines), 161);
     }
 
     #[test]
     fn test_part2() {
         let lines = helpers::read_file_to_vec::<String>("inputs/day3_test.txt");
 
-        assert_eq!(run_part2(&lines), 48_i128);
+        assert_eq!(run_part2(&lines), 48);
     }
     #[test]
     fn test_part2_alt() {
         let lines = helpers::read_file_to_vec::<String>("inputs/day3_test.txt");
 
-        assert_eq!(run_part2_alt(&lines), 48_i128);
+        assert_eq!(run_part2_alt(&lines), 48);
     }
 }
 
-fn parse_mul_instruction(s: &str) -> (i32, i32) {
+fn parse_mul_instruction(s: &str) -> (usize, usize) {
     let re_nums = Regex::new(r"mul\((\d\d?\d?),(\d\d?\d?)\)").unwrap();
     let caps = re_nums.captures(s).unwrap();
-    let a = caps[1].parse::<i32>().unwrap();
-    let b = caps[2].parse::<i32>().unwrap();
+    let a = caps[1].parse().unwrap();
+    let b = caps[2].parse().unwrap();
     (a, b)
 }
 
-pub fn run_part1(input: &[String]) -> i128 {
+pub fn run_part1(input: &[String]) -> usize {
     let re_instruction = Regex::new(r"(mul\(\d\d?\d?,\d\d?\d?\))").unwrap();
 
     let matches: Vec<Vec<String>> = input
@@ -58,20 +58,20 @@ pub fn run_part1(input: &[String]) -> i128 {
     matches
         .iter()
         .flat_map(|l| l.iter().map(|i| parse_mul_instruction(i)))
-        .map(|(a, b)| a as i128 * b as i128)
+        .map(|(a, b)| a * b)
         .sum()
 }
 
-pub fn run_part1_alt(input: &[String]) -> i128 {
+pub fn run_part1_alt(input: &[String]) -> usize {
     let re_nums = Regex::new(r"mul\((\d\d?\d?),(\d\d?\d?)\)").unwrap();
     let all_lines = input.join("");
     re_nums
         .captures_iter(&all_lines)
-        .map(|caps| caps[1].parse::<i128>().unwrap() * caps[2].parse::<i128>().unwrap())
+        .map(|caps| caps[1].parse::<usize>().unwrap() * caps[2].parse::<usize>().unwrap())
         .sum()
 }
 
-fn process_line(line: &str, doing: &mut bool) -> i128 {
+fn process_line(line: &str, doing: &mut bool) -> usize {
     let re = Regex::new(r"^mul\((\d\d?\d?),(\d\d?\d?)\).*").unwrap();
     let re_do = Regex::new(r"^do\(\).*").unwrap();
     let re_dont = Regex::new(r"^don't\(\).*").unwrap();
@@ -87,8 +87,8 @@ fn process_line(line: &str, doing: &mut bool) -> i128 {
             it.nth(5);
         } else if *doing && re.is_match(rest) {
             let caps = re.captures(rest).unwrap();
-            let a = caps[1].parse::<i128>().unwrap();
-            let b = caps[2].parse::<i128>().unwrap();
+            let a = caps[1].parse::<usize>().unwrap();
+            let b = caps[2].parse::<usize>().unwrap();
             result += a * b;
             it.nth(4 + caps[1].len() + caps[2].len());
         }
@@ -96,7 +96,7 @@ fn process_line(line: &str, doing: &mut bool) -> i128 {
     result
 }
 
-pub fn run_part2(input: &[String]) -> i128 {
+pub fn run_part2(input: &[String]) -> usize {
     let mut doing = true;
     let mut sum = 0;
     for l in input {
@@ -106,7 +106,7 @@ pub fn run_part2(input: &[String]) -> i128 {
     sum
 }
 
-pub fn run_part2_alt(input: &[String]) -> i128 {
+pub fn run_part2_alt(input: &[String]) -> usize {
     let re = Regex::new(r"mul\((\d\d?\d?),(\d\d?\d?)\)").unwrap();
     let lines = input.join("");
 
@@ -122,7 +122,7 @@ pub fn run_part2_alt(input: &[String]) -> i128 {
 
     let all_relevant = relevant.join("");
     re.captures_iter(&all_relevant)
-        .map(|caps| caps[1].parse::<i128>().unwrap() * caps[2].parse::<i128>().unwrap())
+        .map(|caps| caps[1].parse::<usize>().unwrap() * caps[2].parse::<usize>().unwrap())
         .sum()
 }
 

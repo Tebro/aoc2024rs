@@ -9,21 +9,21 @@ mod tests {
     fn test_part1() {
         let lines = helpers::read_file_to_vec::<String>("inputs/dayDAY_NUMBER_test.txt");
 
-        assert_eq!(run_part1(&lines), 100_i128);
+        assert_eq!(run_part1(&lines), 100);
     }
     #[test]
     fn test_part2() {
         let lines = helpers::read_file_to_vec::<String>("inputs/dayDAY_NUMBER_test.txt");
 
-        assert_eq!(run_part2(&lines), 70_i128);
+        assert_eq!(run_part2(&lines), 70);
     }
 }
 
-pub fn run_part1(input: &[String]) -> i128 {
+pub fn run_part1(input: &[String]) -> isize {
     100
 }
 
-pub fn run_part2(input: &[String]) -> i128 {
+pub fn run_part2(input: &[String]) -> isize {
     200
 }
 

@@ -9,23 +9,23 @@ mod tests {
     fn test_part1() {
         let lines = helpers::read_file_to_vec::<String>("inputs/day2_test.txt");
 
-        assert_eq!(run_part1(&lines), 100_i128);
+        assert_eq!(run_part1(&lines), 100);
     }
     #[test]
     fn test_part2() {
         let lines = helpers::read_file_to_vec::<String>("inputs/day2_test.txt");
 
-        assert_eq!(run_part2(&lines), 70_i128);
+        assert_eq!(run_part2(&lines), 70);
     }
 }
 
-fn parse_line(line: &str) -> Vec<i32> {
+fn parse_line(line: &str) -> Vec<usize> {
     line.split_whitespace()
         .map(|x| x.parse().unwrap())
         .collect()
 }
 
-fn is_serial(input: &[i32]) -> bool {
+fn is_serial(input: &[usize]) -> bool {
     let going_up = input[0] < input[1];
 
     for i in 1..input.len() {
@@ -40,26 +40,26 @@ fn is_serial(input: &[i32]) -> bool {
     true
 }
 
-fn within_stepsize_limit(input: &[i32], min: i32, max: i32) -> bool {
+fn within_stepsize_limit(input: &[usize]) -> bool {
     for i in 1..input.len() {
-        let diff = (input[i] - input[i - 1]).abs();
-        if diff > max || diff < min {
+        let diff = input[i].abs_diff(input[i + 1]);
+        if !(1..=3).contains(&diff) {
             return false;
         }
     }
     true
 }
 
-pub fn run_part1(input: &[String]) -> i128 {
+pub fn run_part1(input: &[String]) -> usize {
     input
         .iter()
         .map(|l| parse_line(l))
         .filter(|l| is_serial(l))
-        .filter(|x| within_stepsize_limit(x, 1, 3))
-        .count() as i128
+        .filter(|x| within_stepsize_limit(x))
+        .count()
 }
 
-fn drop_one_options(input: &[i32]) -> Vec<Vec<i32>> {
+fn drop_one_options(input: &[usize]) -> Vec<Vec<usize>> {
     let mut options = vec![];
 
     for i in 0..input.len() {
@@ -70,23 +70,20 @@ fn drop_one_options(input: &[i32]) -> Vec<Vec<i32>> {
     options
 }
 
-pub fn run_part2(input: &[String]) -> i128 {
+pub fn run_part2(input: &[String]) -> usize {
     input
         .iter()
         .map(|l| parse_line(l))
         .map(|x| drop_one_options(&x))
-        .filter(|x| {
-            x.iter()
-                .any(|x| is_serial(x) && within_stepsize_limit(x, 1, 3))
-        })
-        .count() as i128
+        .filter(|x| x.iter().any(|x| is_safe(x)))
+        .count()
 }
 
-fn is_safe(x: &[i32]) -> bool {
-    is_serial(x) && within_stepsize_limit(x, 1, 3)
+fn is_safe(x: &[usize]) -> bool {
+    is_serial(x) && within_stepsize_limit(x)
 }
 
-pub fn run_part2_alt(input: &[String]) -> i128 {
+pub fn run_part2_alt(input: &[String]) -> isize {
     let parsed = input.iter().map(|l| parse_line(l));
 
     let mut count = 0;
