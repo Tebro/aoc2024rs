@@ -9,6 +9,7 @@ authors = [ "Tomas Forsblom-Strand <tomas@fik1.net>" ]
 [dependencies]
 itertools = "0.13.0"
 num = "0.4.3"
+regex = "1.11.1"
 
 [dev-dependencies]
 criterion = "0.5.1"
