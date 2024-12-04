@@ -21,7 +21,7 @@ mod tests {
     }
 }
 
-#[derive(Eq, Hash, PartialEq, Clone)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy, Debug)]
 enum Direction {
     Up,
     Down,
@@ -133,11 +133,8 @@ fn count_all_from(
             let mut count = 0;
             for link in node.borrow().links.iter() {
                 if link.node.borrow().value == xmas[current_char_index + 1] {
-                    count += count_all_from(
-                        &link.node,
-                        xmas[current_char_index + 1],
-                        link.direction.clone(),
-                    );
+                    count +=
+                        count_all_from(&link.node, xmas[current_char_index + 1], link.direction);
                 }
             }
             count
@@ -147,7 +144,7 @@ fn count_all_from(
             for link in node.borrow().links.iter() {
                 if link.direction == dir && link.node.borrow().value == xmas[current_char_index + 1]
                 {
-                    count += count_all_from(&link.node, xmas[current_char_index + 1], dir.clone());
+                    count += count_all_from(&link.node, xmas[current_char_index + 1], dir);
                 }
             }
             count
@@ -171,6 +168,74 @@ pub fn run_part1(input: &[String]) -> usize {
 
     let coords = build_graph(&binding);
     count_xmas(&coords)
+}
+
+fn build_char_map(input: &[Vec<char>]) -> HashMap<(isize, isize), char> {
+    let mut map = HashMap::new();
+    for i in 0..input.len() {
+        for j in 0..input[0].len() {
+            map.insert((i as isize, j as isize), input[i][j]);
+        }
+    }
+    map
+}
+
+fn get_neighbour_coords((i, j): (isize, isize), direction: Direction) -> (isize, isize) {
+    match direction {
+        Direction::Up => (i - 1, j),
+        Direction::Down => (i + 1, j),
+        Direction::Left => (i, j - 1),
+        Direction::Right => (i, j + 1),
+        Direction::UpLeft => (i - 1, j - 1),
+        Direction::UpRight => (i - 1, j + 1),
+        Direction::DownLeft => (i + 1, j - 1),
+        Direction::DownRight => (i + 1, j + 1),
+        Direction::Any => (i, j),
+    }
+}
+
+pub fn run_part1_alt(input: &[String]) -> usize {
+    let binding = input
+        .iter()
+        .map(|line| line.chars().collect::<Vec<char>>())
+        .collect::<Vec<Vec<char>>>();
+
+    let map = build_char_map(&binding);
+
+    let x_positions = map.iter().filter(|(_k, v)| **v == 'X');
+
+    let mut count = 0;
+
+    for (x, _v) in x_positions {
+        'dir_loop: for direction in &[
+            Direction::Up,
+            Direction::Down,
+            Direction::Left,
+            Direction::Right,
+            Direction::UpLeft,
+            Direction::UpRight,
+            Direction::DownLeft,
+            Direction::DownRight,
+        ] {
+            let mut temp = *x;
+            for tc in &['M', 'A', 'S'] {
+                temp = get_neighbour_coords(temp, *direction);
+                match map.get(&temp) {
+                    Some(c) => {
+                        if c != tc {
+                            continue 'dir_loop;
+                        };
+                    }
+                    None => {
+                        continue 'dir_loop;
+                    }
+                }
+            }
+            count += 1;
+        }
+    }
+
+    count
 }
 
 fn is_diag_x_mas(node: &Rc<RefCell<GraphNode>>) -> bool {
@@ -236,6 +301,9 @@ pub fn run() -> io::Result<()> {
     let p1 = run_part1(&lines);
     println!("Part1: {:?}", p1);
 
+    // Part 1 goes here
+    let p1 = run_part1_alt(&lines);
+    println!("Part1 alt: {:?}", p1);
     // Part 2 Goes here
     let p2 = run_part2(&lines);
     println!("Part2: {:?}", p2);
