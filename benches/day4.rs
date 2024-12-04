@@ -14,6 +14,12 @@ pub fn bench_day4_p1_alt(c: &mut Criterion) {
         b.iter(|| day4::run_part1_alt(black_box(&lines)))
     });
 }
+pub fn bench_day4_p1_alt2(c: &mut Criterion) {
+    let lines = helpers::read_file_to_vec::<String>("inputs/day4.txt");
+    c.bench_function("Day4 Part 1 alt 2", |b| {
+        b.iter(|| day4::run_part1_alt2(black_box(&lines)))
+    });
+}
 pub fn bench_day4_p2(c: &mut Criterion) {
     let lines = helpers::read_file_to_vec::<String>("inputs/day4.txt");
     c.bench_function("Day4 Part 2", |b| {

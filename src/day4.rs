@@ -238,6 +238,52 @@ pub fn run_part1_alt(input: &[String]) -> usize {
     count
 }
 
+pub fn run_part1_alt2(input: &[String]) -> usize {
+    let binding = input
+        .iter()
+        .map(|line| line.chars().collect::<Vec<char>>())
+        .collect::<Vec<Vec<char>>>();
+
+    let mut count = 0;
+    for i in 0..binding.len() {
+        for j in 0..binding[0].len() {
+            if binding[i][j] != 'X' {
+                continue;
+            }
+            let x = (i as isize, j as isize);
+            'dir_loop: for direction in &[
+                Direction::Up,
+                Direction::Down,
+                Direction::Left,
+                Direction::Right,
+                Direction::UpLeft,
+                Direction::UpRight,
+                Direction::DownLeft,
+                Direction::DownRight,
+            ] {
+                let mut temp: (isize, isize) = x;
+                for tc in &['M', 'A', 'S'] {
+                    temp = get_neighbour_coords(temp, *direction);
+                    if temp.0 < 0
+                        || temp.1 < 0
+                        || temp.0 >= binding.len() as isize
+                        || temp.1 >= binding[0].len() as isize
+                    {
+                        continue 'dir_loop;
+                    }
+                    let c = binding[temp.0 as usize][temp.1 as usize];
+                    if c != *tc {
+                        continue 'dir_loop;
+                    };
+                }
+                count += 1;
+            }
+        }
+    }
+
+    count
+}
+
 fn is_diag_x_mas(node: &Rc<RefCell<GraphNode>>) -> bool {
     let diag_nodes_left_right = node
         .borrow()
@@ -301,9 +347,12 @@ pub fn run() -> io::Result<()> {
     let p1 = run_part1(&lines);
     println!("Part1: {:?}", p1);
 
-    // Part 1 goes here
     let p1 = run_part1_alt(&lines);
     println!("Part1 alt: {:?}", p1);
+
+    let p1 = run_part1_alt2(&lines);
+    println!("Part1 alt 2: {:?}", p1);
+
     // Part 2 Goes here
     let p2 = run_part2(&lines);
     println!("Part2: {:?}", p2);
