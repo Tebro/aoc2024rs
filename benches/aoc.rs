@@ -30,7 +30,8 @@ criterion_group!(
     day4::bench_day4_p1,
     day4::bench_day4_p1_alt,
     day4::bench_day4_p1_alt2,
-    day4::bench_day4_p2
+    day4::bench_day4_p2,
+    day4::bench_day4_p2_alt
 );
 // Add day group here
 

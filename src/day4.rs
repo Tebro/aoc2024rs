@@ -337,6 +337,51 @@ pub fn run_part2(input: &[String]) -> usize {
     all_as.filter(|(_k, a)| is_diag_x_mas(a)).count()
 }
 
+pub fn run_part2_alt(input: &[String]) -> usize {
+    let binding = input
+        .iter()
+        .map(|line| line.chars().collect::<Vec<char>>())
+        .collect::<Vec<Vec<char>>>();
+
+    let mut count = 0;
+    for i in 0..binding.len() {
+        for j in 0..binding[0].len() {
+            if binding[i][j] != 'A' {
+                continue;
+            }
+            let x = (i as isize, j as isize);
+
+            // Check out of bounds risk
+            if i < 1 || j < 1 || i >= binding.len() - 1 || j >= binding[0].len() - 1 {
+                continue;
+            }
+
+            let left_to_right_ok = {
+                let top_left_coords = get_neighbour_coords(x, Direction::UpLeft);
+                let top_left = binding[top_left_coords.0 as usize][top_left_coords.1 as usize];
+                let bottom_right_coords = get_neighbour_coords(x, Direction::DownRight);
+                let bottom_right =
+                    binding[bottom_right_coords.0 as usize][bottom_right_coords.1 as usize];
+                top_left == 'M' && bottom_right == 'S' || top_left == 'S' && bottom_right == 'M'
+            };
+
+            let right_to_left_ok = {
+                let top_right_coords = get_neighbour_coords(x, Direction::UpRight);
+                let top_right = binding[top_right_coords.0 as usize][top_right_coords.1 as usize];
+                let bottom_left_coords = get_neighbour_coords(x, Direction::DownLeft);
+                let bottom_left =
+                    binding[bottom_left_coords.0 as usize][bottom_left_coords.1 as usize];
+                top_right == 'M' && bottom_left == 'S' || top_right == 'S' && bottom_left == 'M'
+            };
+
+            if left_to_right_ok && right_to_left_ok {
+                count += 1;
+            }
+        }
+    }
+    count
+}
+
 pub fn run() -> io::Result<()> {
     println!("\n\nDay 4");
 
@@ -356,6 +401,9 @@ pub fn run() -> io::Result<()> {
     // Part 2 Goes here
     let p2 = run_part2(&lines);
     println!("Part2: {:?}", p2);
+
+    let p2 = run_part2_alt(&lines);
+    println!("Part2 alt: {:?}", p2);
 
     Ok(())
 }
