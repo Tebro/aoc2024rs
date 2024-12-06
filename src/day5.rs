@@ -20,7 +20,7 @@ mod tests {
 }
 
 pub fn run_part1(input: &[String]) -> usize {
-    let mut parts = input.split(|l| l == "");
+    let mut parts = input.split(|l| l.is_empty());
     let rules_raw = parts.next().unwrap();
     let orders = parts.next().unwrap();
 
@@ -56,7 +56,7 @@ pub fn run_part1(input: &[String]) -> usize {
 }
 
 pub fn run_part2(input: &[String]) -> usize {
-    let mut parts = input.split(|l| l == "");
+    let mut parts = input.split(|l| l.is_empty());
     let rules_raw = parts.next().unwrap();
     let orders = parts.next().unwrap();
 
@@ -93,12 +93,12 @@ pub fn run_part2(input: &[String]) -> usize {
 
     for mut order in invalid_lines {
         order.sort_by(|a, b| {
-            let relevant_rules_a = rules.get(&a).unwrap();
+            let relevant_rules_a = rules.get(a).unwrap();
             if relevant_rules_a.contains(b) {
                 return std::cmp::Ordering::Less;
             }
 
-            let relevant_rules_b = rules.get(&b).unwrap();
+            let relevant_rules_b = rules.get(b).unwrap();
             if relevant_rules_b.contains(a) {
                 return std::cmp::Ordering::Greater;
             }

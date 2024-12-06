@@ -144,7 +144,7 @@ fn is_going_over_edge(pos: PosAndDir, map: &[Vec<char>]) -> bool {
     }
 }
 
-fn get_original_path(map: &Vec<Vec<char>>, start: PosAndDir) -> HashSet<PosAndDir> {
+fn get_original_path(map: &[Vec<char>], start: PosAndDir) -> HashSet<PosAndDir> {
     let mut visited_positions = HashSet::new();
     let mut current_position = start.0;
     let mut current_direction = start.1;
@@ -166,14 +166,14 @@ fn get_original_path(map: &Vec<Vec<char>>, start: PosAndDir) -> HashSet<PosAndDi
     visited_positions
 }
 
-fn add_obstacle_ahead(map: &Vec<Vec<char>>, start: PosAndDir) -> Option<Vec<Vec<char>>> {
+fn add_obstacle_ahead(map: &[Vec<char>], start: PosAndDir) -> Option<Vec<Vec<char>>> {
     if !is_going_over_edge(start, map) {
         let next_pos = get_neighbour_coords(start.0, start.1);
         if map[next_pos.0 as usize][next_pos.1 as usize] == '#' {
             return None;
         }
 
-        let mut new_map = map.clone();
+        let mut new_map = map.to_owned();
         let next_pos = get_neighbour_coords(start.0, start.1);
         new_map[next_pos.0 as usize][next_pos.1 as usize] = '#';
         return Some(new_map);
@@ -181,7 +181,7 @@ fn add_obstacle_ahead(map: &Vec<Vec<char>>, start: PosAndDir) -> Option<Vec<Vec<
     None
 }
 
-fn is_looping(map: &Vec<Vec<char>>, start: PosAndDir) -> bool {
+fn is_looping(map: &[Vec<char>], start: PosAndDir) -> bool {
     let mut visited_positions = HashSet::new();
     let mut current_position_and_dir = start;
     loop {
