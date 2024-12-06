@@ -22,7 +22,7 @@ mod tests {
 }
 
 #[derive(Eq, Hash, PartialEq, Clone, Copy, Debug)]
-enum Direction {
+pub enum Direction {
     Up,
     Down,
     Left,
@@ -180,7 +180,7 @@ fn build_char_map(input: &[Vec<char>]) -> HashMap<(isize, isize), char> {
     map
 }
 
-fn get_neighbour_coords((i, j): (isize, isize), direction: Direction) -> (isize, isize) {
+pub fn get_neighbour_coords((i, j): (isize, isize), direction: Direction) -> (isize, isize) {
     match direction {
         Direction::Up => (i - 1, j),
         Direction::Down => (i + 1, j),
