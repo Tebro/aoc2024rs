@@ -6,6 +6,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 // Add days here
 
 criterion_group!(
@@ -37,7 +38,8 @@ criterion_group!(
 );
 criterion_group!(day5, day5::bench_day5_p1, day5::bench_day5_p2);
 criterion_group!(day6, day6::bench_day6_p1, day6::bench_day6_p2);
+criterion_group!(day7, day7::bench_day7_p1, day7::bench_day7_p2);
 // Add day group here
 
 // Do not remove from last line
-criterion_main!(day1, day2, day3, day4, day5, day6);
+criterion_main!(day1, day2, day3, day4, day5, day6, day7);
